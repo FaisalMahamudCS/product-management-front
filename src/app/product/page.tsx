@@ -2,12 +2,14 @@ import axios from "axios";
 import Link from "next/link";
 
 async function getProducts() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products?limit=6`);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/v1/products?limit=6`);
+  console.log('res.data',   res,res.data);
   return res.data;
 }
 
 export default async function Home() {
   const products = await getProducts();
+  console.log('products', products);
 
   return (
     <div className="container mx-auto p-4">
