@@ -47,7 +47,7 @@ export default function RegisterPage() {
               type="text"
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+            {errors.name?.message && <p className="text-red-500 text-sm">{errors.name.message.toString()}</p>}
           </div>
 
           <div>
@@ -75,7 +75,7 @@ export default function RegisterPage() {
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
             disabled={loading}
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? "Registering... " : "Register"}
           </button>
         </form>
 

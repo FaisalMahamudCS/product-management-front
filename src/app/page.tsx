@@ -1,12 +1,12 @@
-import { Product, Category } from "@/types";
+//import { Product, Category } from "@/types";
 import ProductCard from "@/component/product/ProductCard";
 import CategoryCard from "@/component/CategoryCard";
 import { fetchProducts, fetchCategories } from "@/api/product";
 
 export default async function Home() {
   // Fetch featured products and categories (Server-side)
-  const products: Product[] = await fetchProducts({ featured: true });
-  const categories: Category[] = await fetchCategories();
+  const products = await fetchProducts({ featured: true });
+  const categories = await fetchCategories();
 
   return (
     <main className="container mx-auto px-4 py-8">
