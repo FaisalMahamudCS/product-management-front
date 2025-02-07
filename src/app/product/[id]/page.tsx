@@ -5,8 +5,11 @@ async function getProduct(id: string) {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/v1/products/${id}`);
   return res.data;
 }
+interface Params {
+  id: string;
+}
 
-export default async function ProductDetails({ params }: { params: { id: string } }) {
+export default async function ProductDetails({ params }:  any) {
   const product = await getProduct(params.id);
 
   return (
