@@ -2,7 +2,6 @@
 
 import useCartStore from "@/lib/store/cartStore";
 import { useEffect } from "react";
-import axios from "axios";
 import API from "@/lib/axios";
 
 export default function Checkout() {

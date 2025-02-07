@@ -1,3 +1,4 @@
+import { Product } from "@/types/type";
 import axios from "axios";
 import Link from "next/link";
 
@@ -15,7 +16,7 @@ export default async function Home() {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold">Featured Products</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-        {products.map((product) => (
+        {products?.length > 0 && products.map((product: Product) => (
           <div key={product._id} className="border p-4 rounded shadow">
             <img src={product.image_url} alt={product.name} className="w-full h-40 object-cover" />
             <h2 className="text-xl font-bold">{product.name}</h2>

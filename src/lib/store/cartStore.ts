@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import axios from "axios";
-import { CartItem } from "@/types";
+import { CartItem } from "@/types/type";
 import API from "../axios";
 
 type CartState = {
@@ -25,6 +25,7 @@ const useCartStore = create<CartState>((set) => ({
   addToCart: async (productId, quantity = 1) => {
     try {
       await API.post("/v1/carts", { productId, quantity });
+      //@ts-expect-error: Type of state.cart may not match expected type
       set((state) => ({ cart: [...state.cart, { productId, quantity }] }));
     } catch (error) {
       console.error("Error adding to cart:", error);

@@ -23,11 +23,11 @@ export default function RegisterPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<{ name: string; email: string; password: string }>({
     resolver: zodResolver(RegisterSchema),
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { name: string; email: string; password: string }) => {
     setLoading(true);
     const success = await registerUser(data);
     setLoading(false);
@@ -57,7 +57,7 @@ export default function RegisterPage() {
               type="email"
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
-            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+            {errors.email?.message && <p className="text-red-500 text-sm">{errors.email.message.toString()}</p>}
           </div>
 
           <div>
@@ -67,7 +67,7 @@ export default function RegisterPage() {
               type="password"
               className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
-            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+            {errors.password?.message && <p className="text-red-500 text-sm">{errors.password.message.toString()}</p>}
           </div>
 
           <button

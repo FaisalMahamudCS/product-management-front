@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { Product, Category, Order } from "@/types";
+import { Product, Category, Order } from "@/types/type";
 import { useRouter } from "next/navigation";
+import API from "@/lib/axios";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -12,9 +12,9 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    axios.get("/api/products").then((res) => setProducts(res.data));
-    axios.get("/api/categories").then((res) => setCategories(res.data));
-    axios.get("/api/orders").then((res) => setOrders(res.data));
+    API.get("/v1/products").then((res) => setProducts(res.data));
+    API.get("/v1/categories").then((res) => setCategories(res.data));
+    API.get("/v1/orders").then((res) => setOrders(res.data));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export default function AdminDashboard() {
         <section className="border p-4 rounded shadow">
           <h2 className="text-xl font-semibold">Products</h2>
           <button 
-            onClick={() => router.push("/admin/products/new")}
+            onClick={() => router.push("/admin/products/add")}
             className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
           >
             Add Product
