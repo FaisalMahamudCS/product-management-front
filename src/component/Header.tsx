@@ -26,9 +26,9 @@ function Header() {
                     Login
                 </Link>
                    
-        <a href="#" className="hover:text-gray-500">
-          Home
-        </a>
+                <Link href="/" className="">
+                    Home
+                </Link>
         <a href="#" className="hover:text-gray-500">
           About
         </a>
