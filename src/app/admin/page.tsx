@@ -11,8 +11,10 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [isAddCategoryPopupOpen, setIsAddCategoryPopupOpen] = useState(false);
   const [currentEditItem, setCurrentEditItem] = useState<Product | Category | null>(null);
   const [currentDeleteItem, setCurrentDeleteItem] = useState<Product | Category | null>(null);
+  const [newCategory, setNewCategory] = useState<Category>({ _id: '', name: '' });
   const router = useRouter();
 
   useEffect(() => {
@@ -59,7 +61,6 @@ export default function AdminDashboard() {
     setCurrentDeleteItem(item);
     setIsDeletePopupOpen(true);
   };
-  
 
   const handleConfirmDelete = async () => {
     if (currentDeleteItem) {
@@ -82,6 +83,27 @@ export default function AdminDashboard() {
   const handleCancelDelete = () => {
     setIsDeletePopupOpen(false);
     setCurrentDeleteItem(null);
+  };
+
+  const handleAddCategoryClick = () => {
+    setIsAddCategoryPopupOpen(true);
+  };
+
+  const handleAddCategoryClose = () => {
+    setIsAddCategoryPopupOpen(false);
+    setNewCategory({ _id: '', name: '' });
+  };
+
+  const handleAddCategorySave = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const { _id, ...categoryData } = newCategory; // Exclude _id from the new category data
+      const response = await API.post("/v1/categories", categoryData);
+      setCategories([...categories, response.data]);
+      handleAddCategoryClose();
+    } catch (error) {
+      console.error("Failed to add category", error);
+    }
   };
 
   return (
@@ -111,7 +133,7 @@ export default function AdminDashboard() {
         <section className="border p-4 rounded shadow">
           <h2 className="text-xl font-semibold">Categories</h2>
           <button 
-            onClick={() => router.push("/admin/categories/add")}
+            onClick={handleAddCategoryClick}
             className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
           >
             Add Category
@@ -131,22 +153,7 @@ export default function AdminDashboard() {
           {orders.map((order) => (
             <div key={order._id} className="border p-2 mt-2 rounded">
               <p>Order #{order._id} - {order.status}</p>
-                <button 
-                className="text-green-600" 
-                onClick={async () => {
-                  try {
-                  await API.patch(`/v1/orders/${order._id}`, { status: "shipped" });
-                  const updatedOrders = orders.map((o) =>
-                    o._id === order._id ? { ...o, status: "shipped" } : o
-                  );
-                  setOrders(updatedOrders);
-                  } catch (error) {
-                  console.error("Failed to update order status", error);
-                  }
-                }}
-                >
-                Mark as Shipped
-                </button>
+              <button className="text-green-600">Mark as Shipped</button>
             </div>
           ))}
         </section>
@@ -199,6 +206,31 @@ export default function AdminDashboard() {
               <button onClick={handleConfirmDelete} className="bg-red-600 text-white px-4 py-2 rounded mr-2">Delete</button>
               <button onClick={handleCancelDelete} className="bg-gray-600 text-white px-4 py-2 rounded">Cancel</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isAddCategoryPopupOpen && (
+        <div className="popup fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="popup-content bg-white p-6 rounded shadow-lg">
+            <h2 className="text-xl font-semibold">Add Category</h2>
+            <form onSubmit={handleAddCategorySave}>
+              <div>
+                <label htmlFor="categoryName">Name:</label>
+                <input 
+                  type="text" 
+                  id="categoryName" 
+                  name="categoryName" 
+                  value={newCategory.name} 
+                  className="border p-2 rounded w-full" 
+                  onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
+                />
+              </div>
+              <div className="mt-4">
+                <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded mr-2">Save</button>
+                <button type="button" onClick={handleAddCategoryClose} className="bg-gray-600 text-white px-4 py-2 rounded">Cancel</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
