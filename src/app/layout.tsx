@@ -28,12 +28,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.variable} ${openSans.variable} antialiased `}
+        className={`${roboto.variable} ${openSans.variable}`}
       >
+        {/* Header */}
         <Header />
-        <div className="container mx-auto px-4 py-8 bg-white shadow-md rounded-lg">
+
+        {/* Main Content Area */}
+        <div className=" min-h-screen">
           {children}
-        </div>
+          </div>
       </body>
     </html>
   );
