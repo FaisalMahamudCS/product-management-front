@@ -3,7 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 
 async function getProducts() {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/v1/products?limit=6`);
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/v1/products`);
   console.log('res.data',   res,res.data);
   return res.data;
 }
