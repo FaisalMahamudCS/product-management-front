@@ -1,31 +1,43 @@
 "use client";
-
+import Link from "next/link";
 import useCartStore from "@/lib/store/cartStore";
-import { useEffect } from "react";
 
-export default function Cart() {
-    const { cart, fetchCart, removeFromCart } = useCartStore();
+export default function CartPage() {
+  const { cart, removeFromCart } = useCartStore();
 
-    useEffect(() => {
-        fetchCart();
-    }, []);
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
 
-    return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold">Shopping Cart</h1>
-            {cart.length === 0 ? <p>Your cart is empty.</p> : (
-                <div className="mt-4">
-                    {cart.map((item) => (
-                        <div key={item.productId} className="border p-4 rounded shadow flex justify-between">
-                            <div>
-                                <h2 className="text-lg">{item.productId}</h2>
-                                <p>Quantity: {item.quantity}</p>
-                            </div>
-                            <button onClick={() => removeFromCart(item.productId)} className="text-red-600">Remove</button>
-                        </div>
-                    ))}
+      {cart.length === 0 ? (
+        <p>Your cart is empty.</p>
+      ) : (
+        <>
+          <ul className="space-y-4">
+            {cart.map((item) => (
+              <li key={item._id} className="flex items-center justify-between">
+                <div>
+                  <p>{item.name} - ${item.price} x {item.quantity}</p>
                 </div>
-            )}
-        </div>
-    );
+                <button
+                  onClick={() => removeFromCart(item._id)}
+                  className="text-red-500"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6">
+            <Link href="/checkout">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                Proceed to Checkout
+              </button>
+            </Link>
+          </div>
+        </>
+      )}
+    </div>
+  );
 }

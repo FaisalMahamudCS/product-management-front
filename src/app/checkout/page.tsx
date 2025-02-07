@@ -3,6 +3,7 @@
 import useCartStore from "@/lib/store/cartStore";
 import { useEffect } from "react";
 import axios from "axios";
+import API from "@/lib/axios";
 
 export default function Checkout() {
   const { cart, fetchCart } = useCartStore();
@@ -11,8 +12,8 @@ export default function Checkout() {
     fetchCart();
   }, []);
 
-  const placeOrder = async () => {
-    await axios.post("/api/orders", { items: cart });
+  const  placeOrder = async () => {
+    await API.post("/v1/orders", { items: cart });
     alert("Order placed successfully!");
   };
 

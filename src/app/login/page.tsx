@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/lib/store/userStore";
+import API from "@/lib/axios";
 
 export default function Login() {
   const { setUser } = useUserStore();
@@ -12,8 +13,9 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.post("/api/auth/login", form);
+    const res = await API.post("/v1/auth/login", form);
     setUser(res.data.user);
+    localStorage.setItem("token", res.data.tokens.access.token);
     router.push("/");
   };
 

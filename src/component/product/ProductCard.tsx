@@ -9,7 +9,7 @@ interface Props {
 export default function ProductCard({ product }: Props) {
   return (
     <div className="border rounded-lg shadow-md p-4 hover:shadow-lg transition">
-      <Link href={`/products/${product._id}`}>
+      <Link href={`/product/${product._id}`}>
         <Image
           src={product.image_url}
           alt={product.name}

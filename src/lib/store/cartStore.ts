@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { CartItem } from "@/types";
+import API from "../axios";
 
 type CartState = {
   cart: CartItem[];
@@ -15,7 +16,7 @@ const useCartStore = create<CartState>((set) => ({
   cart: [],
   fetchCart: async () => {
     try {
-      const res = await axios.get("/api/cart");
+      const res = await API.get("/v1/carts");
       set({ cart: res.data.items });
     } catch (error) {
       console.error("Error fetching cart:", error);
@@ -23,7 +24,7 @@ const useCartStore = create<CartState>((set) => ({
   },
   addToCart: async (productId, quantity = 1) => {
     try {
-      await axios.post("/api/cart", { productId, quantity });
+      await API.post("/v1/carts", { productId, quantity });
       set((state) => ({ cart: [...state.cart, { productId, quantity }] }));
     } catch (error) {
       console.error("Error adding to cart:", error);

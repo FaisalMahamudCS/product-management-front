@@ -12,6 +12,9 @@ const Header = () => {
                 <Link href="/" className="text-xl font-bold">
                     E-Shop
                 </Link>
+                <Link href="/login" className="text-xl font-bold">
+                    Login
+                </Link>
                 <div className="flex gap-4">
                     <Link href="/cart" className="relative">
                         Cart 🛒
