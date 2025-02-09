@@ -18,9 +18,19 @@ function Header() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const userData = localStorage.getItem("user");
-      if (userData) {
-        setUser(JSON.parse(userData));
+      try {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+          const parsedUser = JSON.parse(userData);
+          if (parsedUser && typeof parsedUser === "object" && parsedUser.name) {
+            setUser(parsedUser);
+          } else {
+            localStorage.removeItem("user");
+          }
+        }
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+        localStorage.removeItem("user");
       }
     }
   }, []);
