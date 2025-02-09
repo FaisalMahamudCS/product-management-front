@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // Create an Axios instance with base URL from environment variables
 const API = axios.create({
@@ -18,5 +19,22 @@ API.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Add a response interceptor
+API.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (typeof window !== "undefined") {
+      if (error.response && (error.response.status === 401 || error.response.status==403)) {
+        localStorage.removeItem("token"); // Clear the expired token
+        toast.error("Session expired. Please log in again.");
+        window.location.href = "/login"; // Redirect to the login page
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default API;

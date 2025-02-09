@@ -7,8 +7,11 @@ interface Props {
 
 export default function CategoryCard({ category }: Props) {
   return (
-    <Link href={`/category/${category._id}`} className="border p-4 rounded-lg shadow-md hover:bg-gray-100 transition">
-      <h3 className="text-lg font-bold">{category.name}</h3>
-    </Link>
+    <div className="block border p-6 rounded-lg shadow-md hover:bg-gray-100 transition transform hover:scale-105">
+      <div className="flex flex-col items-center">
+        <h3 className="text-xl font-bold text-center mb-2">{category.name}</h3>
+        <p className="text-gray-600 text-center">Explore our {category.name} collection</p>
+      </div>
+    </div>
   );
 }

@@ -16,7 +16,7 @@ export default function Login() {
     const res = await API.post("/v1/auth/login", form);
     setUser(res.data.user);
     localStorage.setItem("token", res.data.tokens.access.token);
-    localStorage.setItem("user", res.data.user);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
     if(res.data.user.role === "admin") {
       router.push("/admin");
     } else {    
