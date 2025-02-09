@@ -31,7 +31,10 @@ export default function CartPage() {
                   <p>{item?.product?.name} - ${item?.product?.price} x {item?.quantity}</p>
                 </div>
                 <button
-                  onClick={() => removeFromCart(item._id)}
+                  onClick={() => {
+                    removeFromCart(item._id)
+                  fetchCart()
+                  }}
                   className="text-red-500"
                 >
                   Remove

@@ -39,10 +39,11 @@ const useCartStore = create<CartState>((set) => ({
   },
   removeFromCart: async (productId) => {
     try {
-      await axios.delete(`/api/cart/${productId}`);
+      await API.delete(`/v1/carts/${productId}`);
       set((state) => ({
         cart: state.cart.filter((item) => item.productId !== productId),
       }));
+      
     } catch (error) {
       console.error("Error removing from cart:", error);
     }
