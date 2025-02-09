@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { Product, Category, Order } from "@/types/type";
-import { useRouter } from "next/navigation";
 import API from "@/lib/axios";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -18,10 +19,21 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    API.get("/v1/products").then((res) => setProducts(res.data));
-    API.get("/v1/categories").then((res) => setCategories(res.data));
-    API.get("/v1/orders").then((res) => setOrders(res.data));
-  }, []);
+    //it was stringified pls parse
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const userRole = user.role;
+
+    if (userRole !== "admin") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
+      toast.error("You are not authorized to access this page.");
+      router.push("/login");
+    } else {
+      API.get("/v1/products").then((res) => setProducts(res.data));
+      API.get("/v1/categories").then((res) => setCategories(res.data));
+      API.get("/v1/orders").then((res) => setOrders(res.data));
+    }
+  }, [router]);
 
   const handleEditClick = (item: Product | Category) => {
     setCurrentEditItem(item);

@@ -4,6 +4,7 @@ import { create } from "zustand";
 import axios from "axios";
 import { CartItem } from "@/types/type";
 import API from "../axios";
+import { toast } from "react-toastify";
 
 type CartState = {
   cart: CartItem[];
@@ -24,7 +25,12 @@ const useCartStore = create<CartState>((set) => ({
   },
   addToCart: async (productId, quantity = 1) => {
     try {
-      await API.post("/v1/carts", { productId, quantity });
+      const res = await API.post("/v1/carts", { productId, quantity });
+      if (res.status === 200) {
+        // Assuming you have a toast function available
+        toast.success("Item added to cart successfully");
+      }
+
       //@ts-expect-error: Type of state.cart may not match expected type
       set((state) => ({ cart: [...state.cart, { productId, quantity }] }));
     } catch (error) {
