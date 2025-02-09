@@ -7,6 +7,7 @@ import { Category, Product } from "@/types/type";
 export default async function Home() {
   // Fetch featured products and categories (Server-side)
   const products = await fetchProducts({ featured: true });
+  console.log("PRODUCT",products)
   const categories = await fetchCategories();
 
   return (

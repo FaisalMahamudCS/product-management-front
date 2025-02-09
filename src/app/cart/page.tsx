@@ -1,9 +1,31 @@
 "use client";
+import { useEffect } from "react";
 import Link from "next/link";
 import useCartStore from "@/lib/store/cartStore";
+import io from "socket.io-client";
 
 export default function CartPage() {
-  const { cart, removeFromCart } = useCartStore();
+  const { cart, setCart, removeFromCart } = useCartStore();
+  const userId = "unique-user-id"; // Replace with actual user ID or session token
+
+  useEffect(() => {
+    const socket = io("http://localhost:5000"); // Replace with your server URL
+
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+      socket.emit("join", userId); // Join the room for the specific user
+    });
+
+    socket.on("cartUpdated", ({ userId: updatedUserId, cart: updatedCart }) => {
+      if (updatedUserId === userId) {
+        setCart(updatedCart);
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [setCart, userId]);
 
   return (
     <div className="p-6">

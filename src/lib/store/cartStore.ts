@@ -10,6 +10,7 @@ type CartState = {
   fetchCart: () => Promise<void>;
   addToCart: (productId: string, quantity?: number) => Promise<void>;
   removeFromCart: (productId: string) => Promise<void>;
+  setCart: (cart: CartItem[]) => void;
 };
 
 const useCartStore = create<CartState>((set) => ({
@@ -41,6 +42,7 @@ const useCartStore = create<CartState>((set) => ({
       console.error("Error removing from cart:", error);
     }
   },
+  setCart: (cart) => set({ cart }),
 }));
 
 export default useCartStore;
